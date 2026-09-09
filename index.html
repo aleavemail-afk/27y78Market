@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pick-Up 27</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #faf9f6; color: #1a1a1a; line-height: 1.6; }
@@ -13,7 +13,7 @@
         header { background: #fff; border-bottom: 1px solid #eee; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
         nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Noto Serif JP', serif; font-size: 1.9rem; font-weight: 400; color: #2d5a3d; letter-spacing: 2px; }
+        .logo { font-family: 'Noto Serif JP', serif; font-size: 1.9rem; font-weight: 600; color: #2d5a3d; letter-spacing: 2px; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { text-decoration: none; color: #444; font-weight: 500; font-size: 0.9rem; transition: color 0.2s; }
         .nav-links a:hover { color: #2d5a3d; }
@@ -21,7 +21,7 @@
         .nav-icons svg { width: 22px; height: 22px; stroke: #444; cursor: pointer; }
         .nav-icons svg:hover { stroke: #2d5a3d; }
         .cart-count { background: #c45c3e; color: #fff; font-size: 0.65rem; font-weight: 600; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: absolute; top: -6px; right: -8px; }
-        .cart-wrapper { position: relative; }
+        .cart-wrapper { position: relative; cursor: pointer; }
 
         /* Hero Carousel */
         .hero { position: relative; width: 100%; height: 520px; overflow: hidden; }
@@ -31,7 +31,7 @@
         .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); }
         .hero-content { position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; z-index: 10; }
         .hero-text { max-width: 600px; }
-        .hero-text h1 { font-family: 'Noto Serif JP', serif; font-size: 3.2rem; font-weight: 400; color: #fff; line-height: 1.2; margin-bottom: 1.2rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .hero-text h1 { font-family: 'Noto Serif JP', serif; font-size: 3.2rem; font-weight: 600; color: #fff; line-height: 1.2; margin-bottom: 1.2rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .hero-text p { font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 2rem; max-width: 480px; line-height: 1.7; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
         .btn { display: inline-block; padding: 0.85rem 2.2rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.25s ease; border: none; cursor: pointer; }
         .btn-primary { background: #fff; color: #2d5a3d; }
@@ -43,16 +43,85 @@
         .hero-dot.active { background: #fff; width: 28px; border-radius: 5px; }
         .hero-dot:hover { background: rgba(255,255,255,0.7); }
 
+        /* Resident CTA */
+        .resident-cta { background: #2d5a3d; padding: 1.2rem 0; text-align: center; }
+        .resident-cta a { color: #fff; font-weight: 500; font-size: 0.95rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 2px; transition: border-color 0.2s; }
+        .resident-cta a:hover { border-color: #fff; }
+
         /* Categories */
         .categories { padding: 4rem 0; }
-        .section-title { font-family: 'Noto Serif JP', serif; font-size: 2.2rem; font-weight: 400; text-align: center; margin-bottom: 2.5rem; color: #1a1a1a; }
+        .section-title { font-family: 'Noto Serif JP', serif; font-size: 2.2rem; font-weight: 600; text-align: center; margin-bottom: 2.5rem; color: #1a1a1a; }
         .cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2rem; }
         .cat-card { border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; height: 320px; }
         .cat-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .cat-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.8rem 1.5rem 1.5rem; background: linear-gradient(transparent, rgba(0,0,0,0.65)); color: #fff; }
-        .cat-overlay h3 { font-family: 'Noto Serif JP', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 0.3rem; }
+        .cat-overlay h3 { font-family: 'Noto Serif JP', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.3rem; }
         .cat-overlay p { font-size: 0.8rem; opacity: 0.9; }
+
+        /* Cart Sidebar */
+        .cart-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 200; }
+        .cart-overlay.active { display: block; }
+        .cart-sidebar { position: fixed; top: 0; right: -420px; width: 420px; max-width: 90vw; height: 100%; background: #fff; z-index: 210; box-shadow: -10px 0 40px rgba(0,0,0,0.15); transition: right 0.35s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.active { right: 0; }
+        .cart-header { padding: 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-family: 'Noto Serif JP', serif; font-size: 1.3rem; font-weight: 600; }
+        .cart-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .cart-close:hover { background: #f5f5f5; }
+        .cart-body { flex: 1; padding: 1.5rem; overflow-y: auto; }
+        .cart-empty { text-align: center; color: #999; padding: 3rem 1rem; }
+        .cart-empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+        .cart-item { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #f0f0f0; }
+        .cart-item-img { width: 70px; height: 70px; background: #f5f5f5; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+        .cart-item-price { color: #2d5a3d; font-weight: 700; font-size: 0.95rem; }
+        .cart-item-qty { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.4rem; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .qty-btn:hover { background: #f5f5f5; }
+        .cart-item-remove { background: none; border: none; color: #c45c3e; cursor: pointer; font-size: 0.75rem; margin-top: 0.3rem; }
+        .cart-footer { padding: 1.5rem; border-top: 1px solid #eee; background: #faf9f6; }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .cart-total-label { font-size: 0.9rem; color: #666; }
+        .cart-total-value { font-family: 'Noto Serif JP', serif; font-size: 1.4rem; font-weight: 700; color: #1a1a1a; }
+        .cart-checkout { width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #2d5a3d; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+        .cart-checkout:hover { background: #234a30; }
+        .cart-checkout:disabled { background: #a0b8a8; cursor: not-allowed; }
+
+        /* Registration Page */
+        .reg-page { display: none; min-height: 100vh; background: linear-gradient(135deg, #f5f0e8 0%, #e8e4dc 100%); padding: 3rem 1.5rem; }
+        .reg-page.active { display: block; }
+        .reg-container { max-width: 520px; margin: 0 auto; background: #fff; border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        .reg-back { display: inline-flex; align-items: center; gap: 0.4rem; color: #666; text-decoration: none; font-size: 0.85rem; margin-bottom: 1.5rem; transition: color 0.2s; }
+        .reg-back:hover { color: #2d5a3d; }
+        .reg-back svg { width: 16px; height: 16px; }
+        .reg-container h2 { font-family: 'Noto Serif JP', serif; font-size: 1.8rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.5rem; }
+        .reg-subtitle { color: #666; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6; }
+        .reg-form .form-group { margin-bottom: 1.3rem; }
+        .reg-form label { display: block; font-size: 0.85rem; font-weight: 600; color: #333; margin-bottom: 0.4rem; }
+        .reg-form label .optional { font-weight: 400; color: #999; font-size: 0.8rem; }
+        .reg-form input, .reg-form textarea { width: 100%; padding: 0.85rem 1rem; border: 1.5px solid #e0ddd8; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #1a1a1a; background: #faf9f6; transition: border-color 0.2s, box-shadow 0.2s; }
+        .reg-form input:focus, .reg-form textarea:focus { outline: none; border-color: #2d5a3d; box-shadow: 0 0 0 3px rgba(45,90,61,0.1); }
+        .reg-form input::placeholder, .reg-form textarea::placeholder { color: #bbb; }
+        .reg-form .hint { font-size: 0.78rem; color: #999; margin-top: 0.3rem; }
+        .reg-form .error-msg { font-size: 0.78rem; color: #c45c3e; margin-top: 0.3rem; display: none; }
+        .reg-form .error-msg.show { display: block; }
+        .reg-form input.error { border-color: #c45c3e; }
+        .reg-form textarea { resize: vertical; min-height: 90px; }
+        .reg-submit { width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #2d5a3d; color: #fff; font-family: 'Noto Serif JP', serif; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.2s; margin-top: 0.5rem; }
+        .reg-submit:hover { background: #234a30; transform: translateY(-1px); }
+        .reg-submit:disabled { background: #a0b8a8; cursor: not-allowed; transform: none; }
+
+        /* Success Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #fff; border-radius: 20px; padding: 2.5rem; max-width: 420px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-box .modal-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+        .modal-box h3 { font-family: 'Noto Serif JP', serif; font-size: 1.5rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.6rem; }
+        .modal-box p { color: #666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
+        .modal-btn { padding: 0.8rem 2rem; border-radius: 50px; border: none; background: #2d5a3d; color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; }
+        .modal-btn:hover { background: #234a30; }
 
         /* Footer */
         footer { background: #1a1a1a; color: #aaa; padding: 3rem 0 2rem; }
@@ -77,6 +146,7 @@
             .cat-grid { grid-template-columns: repeat(2, 1fr); }
             .footer-inner { grid-template-columns: 1fr 1fr; }
             .btn-outline { margin-left: 0; margin-top: 0.6rem; display: inline-block; }
+            .reg-container { padding: 1.8rem; }
         }
         @media (max-width: 500px) {
             .cat-grid { grid-template-columns: 1fr; }
@@ -86,6 +156,9 @@
     </style>
 </head>
 <body>
+
+<!-- MAIN PAGE -->
+<div id="main-page">
 
 <header>
     <div class="container">
@@ -100,9 +173,9 @@
             <div class="nav-icons">
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <div class="cart-wrapper">
+                <div class="cart-wrapper" id="cart-toggle">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span class="cart-count">3</span>
+                    <span class="cart-count" id="cart-count">0</span>
                 </div>
             </div>
         </nav>
@@ -146,6 +219,10 @@
         <button class="hero-dot" data-index="4"></button>
     </div>
 </section>
+
+<div class="resident-cta">
+    <a href="#" id="btn-registro">¿Eres residente? Regístrate aquí</a>
+</div>
 
 <section class="categories">
     <div class="container">
@@ -232,7 +309,102 @@
     </div>
 </footer>
 
-<script>
+</div><!-- /main-page -->
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+        <h3>Tu Bolsa</h3>
+        <button class="cart-close" id="cart-close">&times;</button>
+    </div>
+    <div class="cart-body" id="cart-body">
+        <div class="cart-empty">
+            <div class="cart-empty-icon">🛍️</div>
+            <p>Tu bolsa está vacía</p>
+        </div>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span class="cart-total-label">Total</span>
+            <span class="cart-total-value" id="cart-total">$0.00</span>
+        </div>
+        <button class="cart-checkout" id="cart-checkout" disabled>Finalizar pedido</button>
+    </div>
+</div>
+
+<!-- REGISTRATION PAGE -->
+<div id="reg-page" class="reg-page">
+    <div class="reg-container">
+        <a href="#" class="reg-back" id="btn-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Volver al inicio
+        </a>
+        <h2>Únete a la comunidad</h2>
+        <p class="reg-subtitle">Sé parte de la comunidad Pick-Up 27 y recibe un catálogo con tus productos favoritos a mejores precios.</p>
+
+        <form class="reg-form" id="reg-form" novalidate>
+            <div class="form-group">
+                <label for="reg-nombre">Nombre completo</label>
+                <input type="text" id="reg-nombre" name="nombre" placeholder="Ej: María González" required>
+                <span class="error-msg" id="err-nombre">Por favor, ingresa tu nombre completo.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-edificio">Número de edificio / apartamento</label>
+                <input type="text" id="reg-edificio" name="edificio" placeholder="Ej: N4" required>
+                <span class="error-msg" id="err-edificio">Por favor, ingresa tu número de edificio o apartamento.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-movil">Teléfono móvil</label>
+                <input type="tel" id="reg-movil" name="movil" placeholder="Ej: 0412-1234567" required>
+                <span class="error-msg" id="err-movil">Por favor, ingresa tu número de teléfono móvil.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-fijo">Teléfono fijo <span class="optional">(Opcional)</span></label>
+                <input type="tel" id="reg-fijo" name="fijo" placeholder="Ej: 0212-1234567">
+            </div>
+
+            <div class="form-group">
+                <label for="reg-productos">¿Qué productos compras con más frecuencia? <span class="optional">(Opcional)</span></label>
+                <textarea id="reg-productos" name="productos" placeholder="Ej: Arroz, café, leche, detergente... Esto nos ayuda a mejorar nuestro servicio."></textarea>
+            </div>
+
+            <button type="submit" class="reg-submit">Finalizar registro</button>
+        </form>
+    </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="modal-success">
+    <div class="modal-box">
+        <div class="modal-icon">✅</div>
+        <h3>¡Solicitud enviada!</h3>
+        <p>Hemos recibido tu registro. Pronto revisaremos tu solicitud y te notificaremos cuando sea aprobada.</p>
+        <button class="modal-btn" id="modal-close">Entendido</button>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAhLf76gFLV0H_RnNclDkCaICoxIM4MCAM",
+        authDomain: "pickup27-a3c05.firebaseapp.com",
+        projectId: "pickup27-a3c05",
+        storageBucket: "pickup27-a3c05.firebasestorage.app",
+        messagingSenderId: "943009367700",
+        appId: "1:943009367700:web:0cca855a3cf6df058d9681"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ===== HERO CAROUSEL =====
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.hero-dot');
     let current = 0;
@@ -253,6 +425,183 @@
     });
 
     setInterval(nextSlide, 3000);
+
+    // ===== CART SIDEBAR =====
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartClose = document.getElementById('cart-close');
+    const cartCount = document.getElementById('cart-count');
+    const cartBody = document.getElementById('cart-body');
+    const cartTotal = document.getElementById('cart-total');
+    const cartCheckout = document.getElementById('cart-checkout');
+    let cart = [];
+
+    function openCart() {
+        cartOverlay.classList.add('active');
+        cartSidebar.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart() {
+        cartOverlay.classList.remove('active');
+        cartSidebar.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function renderCart() {
+        cartCount.textContent = cart.length;
+        if (cart.length === 0) {
+            cartBody.innerHTML = `
+                <div class="cart-empty">
+                    <div class="cart-empty-icon">🛍️</div>
+                    <p>Tu bolsa está vacía</p>
+                </div>
+            `;
+            cartTotal.textContent = '$0.00';
+            cartCheckout.disabled = true;
+        } else {
+            let total = 0;
+            cartBody.innerHTML = cart.map((item, idx) => {
+                total += item.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-img">${item.emoji}</div>
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                            <div class="cart-item-qty">
+                                <button class="qty-btn" data-idx="${idx}" data-action="minus">−</button>
+                                <span>${item.qty}</span>
+                                <button class="qty-btn" data-idx="${idx}" data-action="plus">+</button>
+                            </div>
+                            <button class="cart-item-remove" data-idx="${idx}">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            cartTotal.textContent = '$' + total.toFixed(2);
+            cartCheckout.disabled = false;
+        }
+    }
+
+    cartToggle.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    cartBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('qty-btn')) {
+            const idx = parseInt(e.target.dataset.idx);
+            const action = e.target.dataset.action;
+            if (action === 'plus') cart[idx].qty++;
+            else if (action === 'minus' && cart[idx].qty > 1) cart[idx].qty--;
+            renderCart();
+        }
+        if (e.target.classList.contains('cart-item-remove')) {
+            const idx = parseInt(e.target.dataset.idx);
+            cart.splice(idx, 1);
+            renderCart();
+        }
+    });
+
+    // Demo: add sample items to cart (remove later)
+    cart = [
+        { name: 'Arroz Premium', price: 2.50, qty: 2, emoji: '🍚' },
+        { name: 'Café Molido', price: 3.80, qty: 1, emoji: '☕' }
+    ];
+    renderCart();
+
+    // ===== PAGE NAVIGATION =====
+    const mainPage = document.getElementById('main-page');
+    const regPage = document.getElementById('reg-page');
+    const btnRegistro = document.getElementById('btn-registro');
+    const btnBack = document.getElementById('btn-back');
+
+    btnRegistro.addEventListener('click', (e) => {
+        e.preventDefault();
+        mainPage.style.display = 'none';
+        regPage.classList.add('active');
+        window.scrollTo(0, 0);
+    });
+
+    btnBack.addEventListener('click', (e) => {
+        e.preventDefault();
+        regPage.classList.remove('active');
+        mainPage.style.display = 'block';
+        window.scrollTo(0, 0);
+    });
+
+    // ===== FORM VALIDATION & FIREBASE SUBMIT =====
+    const form = document.getElementById('reg-form');
+    const modal = document.getElementById('modal-success');
+    const modalClose = document.getElementById('modal-close');
+
+    function showError(fieldId, show) {
+        const input = document.getElementById(fieldId);
+        const err = document.getElementById('err-' + fieldId.replace('reg-', ''));
+        if (show) {
+            input.classList.add('error');
+            err.classList.add('show');
+        } else {
+            input.classList.remove('error');
+            err.classList.remove('show');
+        }
+    }
+
+    function validateField(id) {
+        const val = document.getElementById(id).value.trim();
+        const isValid = val.length > 0;
+        showError(id, !isValid);
+        return isValid;
+    }
+
+    ['reg-nombre', 'reg-edificio', 'reg-movil'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+            if (document.getElementById(id).classList.contains('error')) {
+                validateField(id);
+            }
+        });
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const validNombre = validateField('reg-nombre');
+        const validEdificio = validateField('reg-edificio');
+        const validMovil = validateField('reg-movil');
+
+        if (validNombre && validEdificio && validMovil) {
+            const data = {
+                nombre: document.getElementById('reg-nombre').value.trim(),
+                edificio: document.getElementById('reg-edificio').value.trim(),
+                movil: document.getElementById('reg-movil').value.trim(),
+                fijo: document.getElementById('reg-fijo').value.trim(),
+                productos: document.getElementById('reg-productos').value.trim(),
+                estado: 'pendiente',
+                fecha: serverTimestamp()
+            };
+            try {
+                await addDoc(collection(db, "registros"), data);
+                modal.classList.add('active');
+                form.reset();
+            } catch (err) {
+                alert('Error al enviar el registro. Por favor intenta de nuevo.');
+                console.error(err);
+            }
+        }
+    });
+
+    modalClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+        regPage.classList.remove('active');
+        mainPage.style.display = 'block';
+        window.scrollTo(0, 0);
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
 </script>
 
 </body>
