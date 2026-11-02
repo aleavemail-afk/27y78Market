@@ -5,131 +5,176 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Mercado 27 y 78</title>
 <style>
-:root{--bg:#f2f6f1;--card:#fff;--ink:#1d2b24;--mute:#66766d;--g:#14532d;--g2:#dcebe1;--sun:#f2b632;--line:#dfe7e0}
+:root{--k:#0d0d0d;--k2:#1b1b1b;--gold:#e3b341;--goldd:#8a6a1f;--bg:#f3f3f0;--card:#fff;--ink:#1c1c1c;--mute:#5d5d57;--line:#dcdcd5}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:120px;line-height:1.4}
-button{font:inherit;cursor:pointer;border:0;color:inherit}
-:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+body{font-family:"Helvetica Neue","Segoe UI",system-ui,Roboto,sans-serif;font-weight:300;background:var(--bg);color:var(--ink);padding-bottom:110px;line-height:1.45;letter-spacing:.1px}
+button{font:inherit;font-weight:500;cursor:pointer;border:0;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
 
-/* Letrero de esquina: el elemento memorable */
-.plate{margin:16px 16px 0;background:var(--g);color:#fff;border-radius:14px;padding:14px 18px;border:3px solid #fff;box-shadow:0 0 0 3px var(--g);display:flex;align-items:center;gap:14px}
-.plate b{font-size:44px;line-height:1;font-weight:900;letter-spacing:-2px}
-.plate .y{font-size:20px;font-weight:700;color:var(--sun)}
-.plate small{display:block;font-size:14px;opacity:.9;font-weight:500}
-.pick{margin:12px 16px 0;background:var(--g2);color:var(--g);border-radius:12px;padding:10px 14px;font-size:14px}
+/* Panel negro superior */
+.hd{background:var(--k);color:#fff;position:sticky;top:0;z-index:10;padding-top:env(safe-area-inset-top,0px)}
+.top{display:flex;justify-content:flex-end;padding:8px 16px 0}
+.res{background:none;color:#cfcfc6;font-size:13px;font-weight:300}
+.res u{color:var(--gold);font-weight:400}
+.r1{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px 8px}
+.logo{display:block;text-decoration:none;color:#fff;border:1.5px solid var(--gold);border-radius:10px;padding:6px 14px 7px;background:var(--k2)}
+.logo small{display:block;font-size:12px;font-weight:400;letter-spacing:4px;color:var(--gold);line-height:1.2}
+.logo span{display:flex;align-items:baseline;gap:6px}
+.logo b{font-size:30px;font-weight:200;line-height:1;letter-spacing:-1px}
+.logo i{font-style:normal;font-size:14px;color:var(--gold)}
+.cartb{background:none;border:1.5px solid #3a3a3a;border-radius:99px;padding:9px 14px;font-size:14px;font-weight:400;color:#fff}
+.srch{display:block;padding:0 16px 10px}
+.srch input{width:100%;font:inherit;font-weight:300;color:#fff;background:transparent;border:0;border-bottom:1.5px solid #4a4a4a;padding:8px 2px;border-radius:0}
+.srch input::placeholder{color:#a8a8a0}
+#nav{display:flex;gap:4px;overflow-x:auto;padding:0 12px;border-top:1px solid #2a2a2a;scrollbar-width:none}
+#nav::-webkit-scrollbar{display:none}
+#nav a{flex:none;color:#fff;text-decoration:none;font-size:17px;font-weight:400;padding:13px 12px 11px;border-bottom:3px solid transparent}
+#nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 
-nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none}
-nav::-webkit-scrollbar{display:none}
-nav button{flex:none;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:9px 16px;font-size:15px;font-weight:600}
-nav button[aria-pressed=true]{background:var(--g);border-color:var(--g);color:#fff}
-
-main{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 16px}
-.item{background:var(--card);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
-.pic{height:96px;display:grid;place-items:center;font-size:46px}
+/* Hero central: productos */
+.hero{padding:22px 16px 10px}
+.ttl{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.ttl::before,.ttl::after{content:"";flex:1;height:1.5px;background:var(--ink)}
+.ttl h2{font-size:21px;font-weight:400;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.pic{position:relative;height:104px;display:grid;place-items:center;font-size:44px;background:#ebebe6}
+.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;flex:1}
-.info h3{font-size:15px;font-weight:700}
+.info h3{font-size:16px;font-weight:400}
 .info .u{font-size:13px;color:var(--mute)}
-.info .p{font-size:17px;font-weight:800;color:var(--g);margin-top:2px}
+.info .p{font-size:18px;font-weight:500;margin-top:2px}
 .act{margin-top:auto;padding-top:8px}
-.add{width:100%;background:var(--g);color:#fff;border-radius:10px;padding:9px;font-weight:700}
-.step{display:flex;align-items:center;justify-content:space-between;background:var(--g2);border-radius:10px;padding:3px}
-.step button{width:38px;height:36px;border-radius:8px;background:#fff;font-size:20px;font-weight:700;color:var(--g)}
-.step span{font-weight:800}
+.add{width:100%;background:var(--k);color:var(--gold);border-radius:10px;padding:9px}
+.step{display:flex;align-items:center;justify-content:space-between;background:#ececE6;border-radius:10px;padding:3px}
+.step button{width:38px;height:36px;border-radius:8px;background:#fff;font-size:20px}
+.step span{font-weight:500}
 .agotado{text-align:center;font-size:13px;color:var(--mute);padding:9px}
+/* Tarjetas vacías */
+.vacio .l{height:14px;border-radius:7px;background:#ebebe6;margin-top:6px}
+.vacio .l.s{width:55%}
+.vacio .add{background:#ebebe6;color:transparent;cursor:default;margin-top:6px}
+.nada{grid-column:1/-1;text-align:center;color:var(--mute);padding:30px 0}
+
+/* Cargador */
+#load{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:30}
+.sp{width:38px;height:38px;border:3px solid #e4e4dc;border-top-color:var(--k);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* Barra del carrito */
-#bar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--g);color:#fff;border-radius:16px;padding:14px 18px;display:none;justify-content:space-between;align-items:center;font-weight:700;width:calc(100% - 24px);box-shadow:0 6px 20px rgba(20,83,45,.35)}
+#bar{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--k);color:#fff;border-radius:16px;padding:14px 18px;display:none;justify-content:space-between;align-items:center;width:calc(100% - 24px);box-shadow:0 6px 20px rgba(0,0,0,.3);border:1.5px solid var(--gold)}
 #bar.on{display:flex}
+#bt{color:var(--gold)}
 
 /* Hoja del pedido */
-#veil{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:20}
+#veil{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:20}
 #veil.on{display:block}
 #sheet{position:fixed;left:0;right:0;bottom:0;max-height:88vh;overflow-y:auto;background:#fff;border-radius:22px 22px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));z-index:21;transform:translateY(105%);transition:transform .28s ease}
 #sheet.on{transform:none}
-#sheet h2{font-size:21px;margin-bottom:10px}
+#sheet h2{font-size:22px;font-weight:400;margin-bottom:10px}
 .line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
-.total{display:flex;justify-content:space-between;font-size:19px;font-weight:800;padding:14px 0}
-label{display:block;font-size:14px;font-weight:600;margin-top:10px}
-input{width:100%;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:10px;margin-top:4px}
-.go{width:100%;margin-top:16px;background:var(--g);color:#fff;border-radius:12px;padding:14px;font-weight:800;font-size:16px}
-.go:disabled{opacity:.45}
-.link{display:block;margin:12px auto 0;background:none;color:var(--mute);text-decoration:underline}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:500;padding:14px 0}
+label.f{display:block;font-size:14px;font-weight:400;margin-top:10px}
+#sheet input{width:100%;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:10px;margin-top:4px}
+.go{width:100%;margin-top:16px;background:var(--k);color:var(--gold);border-radius:12px;padding:14px;font-size:16px}
+.link{display:block;margin:12px auto 0;background:none;color:var(--mute);text-decoration:underline;font-weight:300}
 .err{color:#b3261e;font-size:14px;margin-top:8px;min-height:18px}
 .ok{text-align:center;padding:10px 0}
 .ok .big{font-size:52px}
-.code{display:inline-block;background:var(--g2);color:var(--g);font-weight:900;font-size:24px;border-radius:10px;padding:6px 14px;margin:10px 0}
-@media(prefers-reduced-motion:reduce){#sheet{transition:none}}
+.code{display:inline-block;background:var(--k);color:var(--gold);font-weight:500;font-size:24px;border-radius:10px;padding:6px 14px;margin:10px 0}
+@media(prefers-reduced-motion:reduce){#sheet{transition:none}.sp{animation-duration:2.4s}}
 </style>
 </head>
 <body>
 
-<div class="plate" role="banner">
-  <b>27</b><span class="y">y</span><b>78</b>
-  <div style="margin-left:auto;text-align:right"><strong>Mercado</strong><small>Pide hoy, recoge mañana</small></div>
-</div>
-<p class="pick" id="pick"></p>
-<nav id="cats" aria-label="Categorías"></nav>
-<main id="grid"></main>
+<header class="hd">
+  <div class="top"><button class="res" onclick="registro()">¿Eres residente? <u>Regístrate aquí</u></button></div>
+  <div class="r1">
+    <a class="logo" href="#" aria-label="Mercado 27 y 78, inicio"><small>Mercado</small><span><b>27</b><i>y</i><b>78</b></span></a>
+    <button class="cartb" onclick="abrir()">Tu bolsa (<span id="cn">0</span>)</button>
+  </div>
+  <label class="srch"><input id="q" type="search" placeholder="Buscar en el mercado" aria-label="Buscar productos" oninput="buscar()"></label>
+  <nav id="nav" aria-label="Categorías"></nav>
+</header>
+
+<main class="hero">
+  <div class="ttl"><h2 id="ttl"></h2></div>
+  <div class="grid" id="grid"></div>
+</main>
 
 <button id="bar" onclick="abrir()"><span id="bn"></span><span id="bt"></span></button>
 <div id="veil" onclick="cerrar()"></div>
-<section id="sheet" aria-label="Tu pedido"></section>
+<section id="sheet" aria-label="Tu bolsa"></section>
+<div id="load" role="status" aria-label="Cargando"><div class="sp"></div></div>
 
 <script>
-/* ===== Ajustes: aquí cambias lo básico ===== */
+/* ===== Ajustes ===== */
 const CFG = {
   punto: "Local del mercado (dirección por confirmar)",
   horario: "Horario de recogida por confirmar",
-  moneda: "$"
+  moneda: "$",
+  espera: 450,      /* milisegundos del cargador entre páginas */
+  vacias: 6         /* tarjetas vacías mientras no haya productos */
 };
 
-/* ===== Productos de ejemplo =====
-   Más adelante este listado vendrá de tu hoja de Google Sheets.
-   Columnas previstas: categoria, nombre, unidad, precio, stock, emoji */
-const PRODUCTOS = [
-  {c:"Despensa",n:"Arroz",u:"libra",p:1.2,s:40,e:"🌾",k:"#f6ecc9"},
-  {c:"Despensa",n:"Azúcar",u:"libra",p:1.0,s:30,e:"🍚",k:"#f3f0f6"},
-  {c:"Despensa",n:"Sal",u:"paquete 1 kg",p:0.8,s:25,e:"🧂",k:"#e8eef5"},
-  {c:"Despensa",n:"Aceite",u:"botella 1 L",p:3.5,s:12,e:"🫒",k:"#e9f0d2"},
-  {c:"Lácteos",n:"Leche",u:"litro",p:1.5,s:20,e:"🥛",k:"#e6f0fa"},
-  {c:"Lácteos",n:"Queso",u:"libra",p:3.2,s:10,e:"🧀",k:"#faefc8"},
-  {c:"Lácteos",n:"Yogur",u:"vaso",p:1.1,s:0,e:"🍶",k:"#f8e6ee"},
-  {c:"Cárnicos",n:"Pollo",u:"libra",p:2.4,s:15,e:"🍗",k:"#fbe4d6"},
-  {c:"Cárnicos",n:"Carne molida",u:"libra",p:3.8,s:8,e:"🥩",k:"#f7dada"},
-  {c:"Cárnicos",n:"Huevos",u:"docena",p:3.0,s:18,e:"🥚",k:"#f5ecdc"},
-  {c:"Aseo",n:"Jabón de baño",u:"unidad",p:0.9,s:30,e:"🧼",k:"#e0f1ee"},
-  {c:"Aseo",n:"Detergente",u:"bolsa 500 g",p:2.2,s:14,e:"🧺",k:"#e4e9fa"}
+const CATS = [
+  {id:"despensa",n:"Despensa"},
+  {id:"lacteos",n:"Lácteos"},
+  {id:"carnicos",n:"Cárnicos"},
+  {id:"aseo",n:"Aseo"}
 ];
-const CATS = ["Todo","Despensa","Lácteos","Cárnicos","Aseo"];
 
-let cat = "Todo";
-const cart = {}; // índice del producto -> cantidad
+/* Productos: vacío por ahora. Luego vendrán de tu hoja de Google Sheets.
+   Ejemplo de uno: {c:"despensa",n:"Arroz",u:"libra",p:1.2,s:40,e:"🌾",i:"img/arroz.jpg"} */
+const PRODUCTOS = [];
+
+const cart = {};
+let busqueda = "";
 const $ = id => document.getElementById(id);
 const money = v => CFG.moneda + v.toFixed(2);
+const actual = () => decodeURIComponent(location.hash.slice(1));
 
-$("pick").textContent = "Recoges en: " + CFG.punto + ". " + CFG.horario + ".";
-
-function pintarCats(){
-  $("cats").innerHTML = "";
-  CATS.forEach(c=>{
-    const b = document.createElement("button");
-    b.textContent = c;
-    b.setAttribute("aria-pressed", c===cat);
-    b.onclick = ()=>{cat=c;pintarCats();pintar();};
-    $("cats").appendChild(b);
-  });
+function imgTag(src){
+  return src ? `<img src="${src}" alt="" loading="lazy" onerror="this.remove()">` : "";
 }
 
-function pintar(){
+function pintarVista(h){
+  const cat = CATS.find(c=>c.id===h);
+  /* menú de categorías */
+  const nav = $("nav"); nav.innerHTML = "";
+  [{id:"",n:"Todo"}].concat(CATS).forEach(c=>{
+    const a = document.createElement("a");
+    a.href = "#" + c.id; a.textContent = c.n;
+    if((cat?cat.id:"")===c.id) a.className = "on";
+    nav.appendChild(a);
+  });
+  $("ttl").textContent = cat ? cat.n : "Todos los productos";
   const g = $("grid"); g.innerHTML = "";
+
+  /* sin productos: tarjetas vacías */
+  if(PRODUCTOS.length===0){
+    for(let k=0;k<CFG.vacias;k++){
+      const d = document.createElement("article");
+      d.className = "item vacio"; d.setAttribute("aria-hidden","true");
+      d.innerHTML = '<div class="pic"></div><div class="info"><div class="l"></div><div class="l s"></div><div class="act"><div class="add">.</div></div></div>';
+      g.appendChild(d);
+    }
+    return;
+  }
+
+  let hay = 0;
   PRODUCTOS.forEach((x,i)=>{
-    if(cat!=="Todo" && x.c!==cat) return;
+    if(cat && x.c!==cat.id) return;
+    if(busqueda && !x.n.toLowerCase().includes(busqueda)) return;
+    hay++;
     const q = cart[i]||0;
     const d = document.createElement("article");
     d.className = "item";
-    d.innerHTML = `<div class="pic" style="background:${x.k}">${x.e}</div>
-      <div class="info"><h3>${x.n}</h3><span class="u">${x.u}</span><span class="p">${money(x.p)}</span>
-      <div class="act"></div></div>`;
+    d.innerHTML = `<div class="pic">${x.e||""}${imgTag(x.i)}</div>
+      <div class="info"><h3></h3><span class="u"></span><span class="p">${money(x.p)}</span><div class="act"></div></div>`;
+    d.querySelector("h3").textContent = x.n;
+    d.querySelector(".u").textContent = x.u;
     const a = d.querySelector(".act");
     if(x.s<=0){ a.innerHTML = '<p class="agotado">Agotado</p>'; }
     else if(q===0){
@@ -142,13 +187,27 @@ function pintar(){
     }
     g.appendChild(d);
   });
+  if(hay===0) g.innerHTML = '<p class="nada">No encontramos productos con eso.</p>';
 }
+
+function buscar(){
+  busqueda = $("q").value.trim().toLowerCase();
+  pintarVista(actual());
+}
+
+/* Navegación con cargador */
+function ir(){
+  $("load").hidden = false;
+  setTimeout(()=>{ pintarVista(actual()); window.scrollTo(0,0); $("load").hidden = true; }, CFG.espera);
+}
+window.addEventListener("hashchange", ir);
 
 function cambiar(i,d){
   const x = PRODUCTOS[i];
   const n = Math.max(0, Math.min(x.s, (cart[i]||0)+d));
   if(n===0) delete cart[i]; else cart[i]=n;
-  pintar(); barra();
+  const y = window.scrollY;
+  pintarVista(actual()); window.scrollTo(0,y); barra();
   if($("sheet").classList.contains("on")) abrir();
 }
 
@@ -161,26 +220,36 @@ function totales(){
 function barra(){
   const {n,t} = totales();
   $("bar").classList.toggle("on", n>0);
-  $("bn").textContent = "Ver pedido (" + n + ")";
+  $("bn").textContent = "Ver tu bolsa (" + n + ")";
   $("bt").textContent = money(t);
+  $("cn").textContent = n;
 }
 
 function abrir(){
   const {n,t} = totales();
-  if(n===0){ cerrar(); return; }
   const s = $("sheet");
-  const prev = {nom:$("nom")?.value||"", tel:$("tel")?.value||""};
-  s.innerHTML = "<h2>Tu pedido</h2>" +
-    Object.keys(cart).map(i=>{const x=PRODUCTOS[i];
-      return `<div class="line"><span>${cart[i]} × ${x.n} (${x.u})</span><strong>${money(cart[i]*x.p)}</strong></div>`;}).join("") +
-    `<div class="total"><span>Total</span><span>${money(t)}</span></div>
-     <p style="font-size:14px;color:var(--mute)">Pagas al recoger.</p>
-     <label for="nom">Tu nombre</label><input id="nom" autocomplete="name">
-     <label for="tel">Tu teléfono</label><input id="tel" type="tel" autocomplete="tel">
-     <p class="err" id="err" role="alert"></p>
-     <button class="go" onclick="confirmar()">Confirmar pedido</button>
-     <button class="link" onclick="cerrar()">Seguir comprando</button>`;
-  $("nom").value = prev.nom; $("tel").value = prev.tel;
+  if(n===0){
+    s.innerHTML = '<h2>Tu bolsa está vacía</h2><p style="color:var(--mute)">Añade productos y aquí los verás.</p><button class="go" onclick="cerrar()">Seguir mirando</button>';
+  } else {
+    const prev = {nom:$("nom")?.value||"", tel:$("tel")?.value||""};
+    s.innerHTML = "<h2>Tu bolsa</h2>" +
+      Object.keys(cart).map(i=>{const x=PRODUCTOS[i];
+        return `<div class="line"><span>${cart[i]} × ${x.n} (${x.u})</span><strong style="font-weight:500">${money(cart[i]*x.p)}</strong></div>`;}).join("") +
+      `<div class="total"><span>Total</span><span>${money(t)}</span></div>
+       <p style="font-size:14px;color:var(--mute)">Pagas al recoger.</p>
+       <label class="f" for="nom">Tu nombre</label><input id="nom" autocomplete="name">
+       <label class="f" for="tel">Tu teléfono</label><input id="tel" type="tel" autocomplete="tel">
+       <p class="err" id="err" role="alert"></p>
+       <button class="go" onclick="confirmar()">Confirmar pedido</button>
+       <button class="link" onclick="cerrar()">Seguir comprando</button>`;
+    $("nom").value = prev.nom; $("tel").value = prev.tel;
+  }
+  s.classList.add("on"); $("veil").classList.add("on");
+}
+
+function registro(){
+  const s = $("sheet");
+  s.innerHTML = '<h2>Registro de residentes</h2><p style="color:var(--mute)">Muy pronto podrás registrarte aquí.</p><button class="go" onclick="cerrar()">Entendido</button>';
   s.classList.add("on"); $("veil").classList.add("on");
 }
 
@@ -197,19 +266,20 @@ function confirmar(){
     items: Object.keys(cart).map(i=>({producto:PRODUCTOS[i].n,cantidad:cart[i],unidad:PRODUCTOS[i].u}))
   };
   enviarPedido(pedido);
-  $("sheet").innerHTML = `<div class="ok"><div class="big">✅</div><h2>¡Pedido listo, ${nom.replace(/[<>&]/g,"")}!</h2>
+  $("sheet").innerHTML = `<div class="ok"><div class="big">✅</div><h2></h2>
     <p>Tu código es</p><div class="code">${pedido.codigo}</div>
-    <p>Total a pagar al recoger: <strong>${money(t)}</strong></p>
+    <p>Total a pagar al recoger: <strong style="font-weight:500">${money(t)}</strong></p>
     <p style="margin-top:8px">${CFG.punto}. ${CFG.horario}.</p>
     <button class="go" onclick="nuevo()">Hacer otro pedido</button></div>`;
+  $("sheet").querySelector("h2").textContent = "¡Pedido listo, " + nom + "!";
 }
 
 /* Aquí conectaremos después el envío a tu hoja y a Telegram */
 function enviarPedido(p){ console.log("Pedido", p); }
 
-function nuevo(){ Object.keys(cart).forEach(k=>delete cart[k]); cerrar(); pintar(); barra(); }
+function nuevo(){ Object.keys(cart).forEach(k=>delete cart[k]); cerrar(); pintarVista(actual()); barra(); }
 
-pintarCats(); pintar(); barra();
+barra(); ir();
 </script>
 </body>
 </html>
