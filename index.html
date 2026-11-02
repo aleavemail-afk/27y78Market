@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mercado 27 y 78</title>
+<style>
+:root{--bg:#f2f6f1;--card:#fff;--ink:#1d2b24;--mute:#66766d;--g:#14532d;--g2:#dcebe1;--sun:#f2b632;--line:#dfe7e0}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:120px;line-height:1.4}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* Letrero de esquina: el elemento memorable */
+.plate{margin:16px 16px 0;background:var(--g);color:#fff;border-radius:14px;padding:14px 18px;border:3px solid #fff;box-shadow:0 0 0 3px var(--g);display:flex;align-items:center;gap:14px}
+.plate b{font-size:44px;line-height:1;font-weight:900;letter-spacing:-2px}
+.plate .y{font-size:20px;font-weight:700;color:var(--sun)}
+.plate small{display:block;font-size:14px;opacity:.9;font-weight:500}
+.pick{margin:12px 16px 0;background:var(--g2);color:var(--g);border-radius:12px;padding:10px 14px;font-size:14px}
+
+nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:9px 16px;font-size:15px;font-weight:600}
+nav button[aria-pressed=true]{background:var(--g);border-color:var(--g);color:#fff}
+
+main{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 16px}
+.item{background:var(--card);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.pic{height:96px;display:grid;place-items:center;font-size:46px}
+.info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;flex:1}
+.info h3{font-size:15px;font-weight:700}
+.info .u{font-size:13px;color:var(--mute)}
+.info .p{font-size:17px;font-weight:800;color:var(--g);margin-top:2px}
+.act{margin-top:auto;padding-top:8px}
+.add{width:100%;background:var(--g);color:#fff;border-radius:10px;padding:9px;font-weight:700}
+.step{display:flex;align-items:center;justify-content:space-between;background:var(--g2);border-radius:10px;padding:3px}
+.step button{width:38px;height:36px;border-radius:8px;background:#fff;font-size:20px;font-weight:700;color:var(--g)}
+.step span{font-weight:800}
+.agotado{text-align:center;font-size:13px;color:var(--mute);padding:9px}
+
+/* Barra del carrito */
+#bar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--g);color:#fff;border-radius:16px;padding:14px 18px;display:none;justify-content:space-between;align-items:center;font-weight:700;width:calc(100% - 24px);box-shadow:0 6px 20px rgba(20,83,45,.35)}
+#bar.on{display:flex}
+
+/* Hoja del pedido */
+#veil{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:20}
+#veil.on{display:block}
+#sheet{position:fixed;left:0;right:0;bottom:0;max-height:88vh;overflow-y:auto;background:#fff;border-radius:22px 22px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));z-index:21;transform:translateY(105%);transition:transform .28s ease}
+#sheet.on{transform:none}
+#sheet h2{font-size:21px;margin-bottom:10px}
+.line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:800;padding:14px 0}
+label{display:block;font-size:14px;font-weight:600;margin-top:10px}
+input{width:100%;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:10px;margin-top:4px}
+.go{width:100%;margin-top:16px;background:var(--g);color:#fff;border-radius:12px;padding:14px;font-weight:800;font-size:16px}
+.go:disabled{opacity:.45}
+.link{display:block;margin:12px auto 0;background:none;color:var(--mute);text-decoration:underline}
+.err{color:#b3261e;font-size:14px;margin-top:8px;min-height:18px}
+.ok{text-align:center;padding:10px 0}
+.ok .big{font-size:52px}
+.code{display:inline-block;background:var(--g2);color:var(--g);font-weight:900;font-size:24px;border-radius:10px;padding:6px 14px;margin:10px 0}
+@media(prefers-reduced-motion:reduce){#sheet{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="plate" role="banner">
+  <b>27</b><span class="y">y</span><b>78</b>
+  <div style="margin-left:auto;text-align:right"><strong>Mercado</strong><small>Pide hoy, recoge mañana</small></div>
+</div>
+<p class="pick" id="pick"></p>
+<nav id="cats" aria-label="Categorías"></nav>
+<main id="grid"></main>
+
+<button id="bar" onclick="abrir()"><span id="bn"></span><span id="bt"></span></button>
+<div id="veil" onclick="cerrar()"></div>
+<section id="sheet" aria-label="Tu pedido"></section>
+
+<script>
+/* ===== Ajustes: aquí cambias lo básico ===== */
+const CFG = {
+  punto: "Local del mercado (dirección por confirmar)",
+  horario: "Horario de recogida por confirmar",
+  moneda: "$"
+};
+
+/* ===== Productos de ejemplo =====
+   Más adelante este listado vendrá de tu hoja de Google Sheets.
+   Columnas previstas: categoria, nombre, unidad, precio, stock, emoji */
+const PRODUCTOS = [
+  {c:"Despensa",n:"Arroz",u:"libra",p:1.2,s:40,e:"🌾",k:"#f6ecc9"},
+  {c:"Despensa",n:"Azúcar",u:"libra",p:1.0,s:30,e:"🍚",k:"#f3f0f6"},
+  {c:"Despensa",n:"Sal",u:"paquete 1 kg",p:0.8,s:25,e:"🧂",k:"#e8eef5"},
+  {c:"Despensa",n:"Aceite",u:"botella 1 L",p:3.5,s:12,e:"🫒",k:"#e9f0d2"},
+  {c:"Lácteos",n:"Leche",u:"litro",p:1.5,s:20,e:"🥛",k:"#e6f0fa"},
+  {c:"Lácteos",n:"Queso",u:"libra",p:3.2,s:10,e:"🧀",k:"#faefc8"},
+  {c:"Lácteos",n:"Yogur",u:"vaso",p:1.1,s:0,e:"🍶",k:"#f8e6ee"},
+  {c:"Cárnicos",n:"Pollo",u:"libra",p:2.4,s:15,e:"🍗",k:"#fbe4d6"},
+  {c:"Cárnicos",n:"Carne molida",u:"libra",p:3.8,s:8,e:"🥩",k:"#f7dada"},
+  {c:"Cárnicos",n:"Huevos",u:"docena",p:3.0,s:18,e:"🥚",k:"#f5ecdc"},
+  {c:"Aseo",n:"Jabón de baño",u:"unidad",p:0.9,s:30,e:"🧼",k:"#e0f1ee"},
+  {c:"Aseo",n:"Detergente",u:"bolsa 500 g",p:2.2,s:14,e:"🧺",k:"#e4e9fa"}
+];
+const CATS = ["Todo","Despensa","Lácteos","Cárnicos","Aseo"];
+
+let cat = "Todo";
+const cart = {}; // índice del producto -> cantidad
+const $ = id => document.getElementById(id);
+const money = v => CFG.moneda + v.toFixed(2);
+
+$("pick").textContent = "Recoges en: " + CFG.punto + ". " + CFG.horario + ".";
+
+function pintarCats(){
+  $("cats").innerHTML = "";
+  CATS.forEach(c=>{
+    const b = document.createElement("button");
+    b.textContent = c;
+    b.setAttribute("aria-pressed", c===cat);
+    b.onclick = ()=>{cat=c;pintarCats();pintar();};
+    $("cats").appendChild(b);
+  });
+}
+
+function pintar(){
+  const g = $("grid"); g.innerHTML = "";
+  PRODUCTOS.forEach((x,i)=>{
+    if(cat!=="Todo" && x.c!==cat) return;
+    const q = cart[i]||0;
+    const d = document.createElement("article");
+    d.className = "item";
+    d.innerHTML = `<div class="pic" style="background:${x.k}">${x.e}</div>
+      <div class="info"><h3>${x.n}</h3><span class="u">${x.u}</span><span class="p">${money(x.p)}</span>
+      <div class="act"></div></div>`;
+    const a = d.querySelector(".act");
+    if(x.s<=0){ a.innerHTML = '<p class="agotado">Agotado</p>'; }
+    else if(q===0){
+      const b = document.createElement("button"); b.className="add"; b.textContent="Añadir";
+      b.onclick = ()=>cambiar(i,1); a.appendChild(b);
+    } else {
+      a.innerHTML = `<div class="step"><button aria-label="Quitar uno">−</button><span>${q}</span><button aria-label="Añadir uno">+</button></div>`;
+      const [m,p] = a.querySelectorAll("button");
+      m.onclick = ()=>cambiar(i,-1); p.onclick = ()=>cambiar(i,1);
+    }
+    g.appendChild(d);
+  });
+}
+
+function cambiar(i,d){
+  const x = PRODUCTOS[i];
+  const n = Math.max(0, Math.min(x.s, (cart[i]||0)+d));
+  if(n===0) delete cart[i]; else cart[i]=n;
+  pintar(); barra();
+  if($("sheet").classList.contains("on")) abrir();
+}
+
+function totales(){
+  let n=0,t=0;
+  Object.keys(cart).forEach(i=>{n+=cart[i];t+=cart[i]*PRODUCTOS[i].p;});
+  return {n,t};
+}
+
+function barra(){
+  const {n,t} = totales();
+  $("bar").classList.toggle("on", n>0);
+  $("bn").textContent = "Ver pedido (" + n + ")";
+  $("bt").textContent = money(t);
+}
+
+function abrir(){
+  const {n,t} = totales();
+  if(n===0){ cerrar(); return; }
+  const s = $("sheet");
+  const prev = {nom:$("nom")?.value||"", tel:$("tel")?.value||""};
+  s.innerHTML = "<h2>Tu pedido</h2>" +
+    Object.keys(cart).map(i=>{const x=PRODUCTOS[i];
+      return `<div class="line"><span>${cart[i]} × ${x.n} (${x.u})</span><strong>${money(cart[i]*x.p)}</strong></div>`;}).join("") +
+    `<div class="total"><span>Total</span><span>${money(t)}</span></div>
+     <p style="font-size:14px;color:var(--mute)">Pagas al recoger.</p>
+     <label for="nom">Tu nombre</label><input id="nom" autocomplete="name">
+     <label for="tel">Tu teléfono</label><input id="tel" type="tel" autocomplete="tel">
+     <p class="err" id="err" role="alert"></p>
+     <button class="go" onclick="confirmar()">Confirmar pedido</button>
+     <button class="link" onclick="cerrar()">Seguir comprando</button>`;
+  $("nom").value = prev.nom; $("tel").value = prev.tel;
+  s.classList.add("on"); $("veil").classList.add("on");
+}
+
+function cerrar(){ $("sheet").classList.remove("on"); $("veil").classList.remove("on"); }
+
+function confirmar(){
+  const nom = $("nom").value.trim(), tel = $("tel").value.trim();
+  if(nom.length<2){ $("err").textContent="Escribe tu nombre para poder entregarte el pedido."; return; }
+  if(tel.replace(/\D/g,"").length<7){ $("err").textContent="Escribe un teléfono válido para avisarte."; return; }
+  const {t} = totales();
+  const pedido = {
+    codigo: "P" + String(Math.floor(Math.random()*9000)+1000),
+    nombre: nom, telefono: tel, total: t,
+    items: Object.keys(cart).map(i=>({producto:PRODUCTOS[i].n,cantidad:cart[i],unidad:PRODUCTOS[i].u}))
+  };
+  enviarPedido(pedido);
+  $("sheet").innerHTML = `<div class="ok"><div class="big">✅</div><h2>¡Pedido listo, ${nom.replace(/[<>&]/g,"")}!</h2>
+    <p>Tu código es</p><div class="code">${pedido.codigo}</div>
+    <p>Total a pagar al recoger: <strong>${money(t)}</strong></p>
+    <p style="margin-top:8px">${CFG.punto}. ${CFG.horario}.</p>
+    <button class="go" onclick="nuevo()">Hacer otro pedido</button></div>`;
+}
+
+/* Aquí conectaremos después el envío a tu hoja y a Telegram */
+function enviarPedido(p){ console.log("Pedido", p); }
+
+function nuevo(){ Object.keys(cart).forEach(k=>delete cart[k]); cerrar(); pintar(); barra(); }
+
+pintarCats(); pintar(); barra();
+</script>
+</body>
+</html>
