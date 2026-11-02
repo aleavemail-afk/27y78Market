@@ -225,6 +225,20 @@ function buscar(){
 }
 
 /* Navegación con cargador */
+/* Precarga en segundo plano los banners de las demás categorías */
+const guardadas = [];
+let precargado = false;
+function precargar(){
+  if(precargado) return;
+  precargado = true;
+  if(navigator.connection && navigator.connection.saveData) return; /* respeta el ahorro de datos */
+  const ir = ()=>["todo"].concat(CATS.map(c=>c.id)).forEach(k=>{
+    const im = new Image(); im.decoding = "async"; im.src = "img/banner-" + k + ".webp";
+    guardadas.push(im);
+  });
+  if("requestIdleCallback" in window) requestIdleCallback(ir,{timeout:3000}); else setTimeout(ir,800);
+}
+
 let turno = 0;
 
 /* Espera a que cargue (o falle) la imagen de la categoría */
@@ -248,6 +262,7 @@ function ir(){
     esperarImg().then(()=>{
       if(mio!==turno) return;
       $("cont").classList.remove("sal"); $("load").classList.remove("on");
+      precargar();
     });
   }, CFG.espera);
 }
@@ -331,6 +346,11 @@ function enviarPedido(p){ console.log("Pedido", p); }
 function nuevo(){ Object.keys(cart).forEach(k=>delete cart[k]); cerrar(); pintarVista(actual()); barra(); }
 
 armarNav(); barra(); ir();
+
+/* Guarda imágenes y página en el móvil para cargar más rápido (necesita sw.js junto a index.html) */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
 </script>
 </body>
 </html>
