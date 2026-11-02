@@ -39,7 +39,7 @@ button{font:inherit;font-weight:500;cursor:pointer;border:0;color:inherit}
 .ttl h2{font-size:21px;font-weight:400;text-align:center}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .item{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
-.pic{position:relative;height:104px;display:grid;place-items:center;font-size:44px;background:#ebebe6}
+.pic{position:relative;aspect-ratio:1/1;display:grid;place-items:center;font-size:54px;background:#ebebe6}
 .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;flex:1}
 .info h3{font-size:16px;font-weight:400}
@@ -122,8 +122,9 @@ label.f{display:block;font-size:14px;font-weight:400;margin-top:10px}
 const CFG = {
   punto: "Local del mercado (dirección por confirmar)",
   horario: "Horario de recogida por confirmar",
-  moneda: "$",
-  espera: 450,      /* milisegundos del cargador entre páginas */
+  moneda: "CUP",
+  espera: 450,      /* mínimo de milisegundos del cargador entre páginas */
+  maxEspera: 8000,  /* máximo que espera a la imagen de la categoría */
   vacias: 6         /* tarjetas vacías mientras no haya productos */
 };
 
@@ -131,17 +132,21 @@ const CATS = [
   {id:"despensa",n:"Despensa"},
   {id:"lacteos",n:"Lácteos"},
   {id:"carnicos",n:"Cárnicos"},
-  {id:"aseo",n:"Aseo"}
+  {id:"aseo",n:"Aseo y Sales de Baño"}
 ];
 
-/* Productos: vacío por ahora. Luego vendrán de tu hoja de Google Sheets.
-   Ejemplo de uno: {c:"despensa",n:"Arroz",u:"libra",p:1.2,s:40,e:"🌾",i:"img/arroz.jpg"} */
-const PRODUCTOS = [];
+/* Productos de ejemplo, precios en CUP. Luego vendrán de tu hoja de Google Sheets.
+   c: categoría, n: nombre, u: unidad, p: precio, s: stock,
+   e: emoji de respaldo, i: foto cuadrada en .webp */
+const PRODUCTOS = [
+  {c:"despensa",n:"Arroz",u:"libra",p:300,s:20,e:"🍚",i:"img/arroz.webp"},
+  {c:"despensa",n:"Azúcar",u:"libra",p:350,s:15,e:"🍬",i:"img/azucar.webp"}
+];
 
 const cart = {};
 let busqueda = "";
 const $ = id => document.getElementById(id);
-const money = v => CFG.moneda + v.toFixed(2);
+const money = v => v.toLocaleString("es-CU",{maximumFractionDigits:2}) + " " + CFG.moneda;
 const actual = () => decodeURIComponent(location.hash.slice(1));
 
 function imgTag(src){
@@ -211,7 +216,7 @@ function pintarVista(h){
     }
     g.appendChild(d);
   });
-  if(hay===0) g.innerHTML = '<p class="nada">No encontramos productos con eso.</p>';
+  if(hay===0) g.innerHTML = '<p class="nada">' + (busqueda ? "No encontramos productos con eso." : "Pronto habrá productos aquí.") + '</p>';
 }
 
 function buscar(){
@@ -220,13 +225,30 @@ function buscar(){
 }
 
 /* Navegación con cargador */
+let turno = 0;
+
+/* Espera a que cargue (o falle) la imagen de la categoría */
+function esperarImg(){
+  return new Promise(fin=>{
+    const im = $("himg").querySelector("img");
+    if(!im || im.complete) return fin();
+    im.addEventListener("load", fin, {once:true});
+    im.addEventListener("error", fin, {once:true});
+    setTimeout(fin, CFG.maxEspera);
+  });
+}
+
 function ir(){
-  const h = actual();
+  const h = actual(), mio = ++turno;
   marcarNav(CATS.some(c=>c.id===h) ? h : "");
   $("cont").classList.add("sal"); $("load").classList.add("on");
   setTimeout(()=>{
+    if(mio!==turno) return;
     pintarVista(h); window.scrollTo(0,0);
-    $("cont").classList.remove("sal"); $("load").classList.remove("on");
+    esperarImg().then(()=>{
+      if(mio!==turno) return;
+      $("cont").classList.remove("sal"); $("load").classList.remove("on");
+    });
   }, CFG.espera);
 }
 window.addEventListener("hashchange", ir);
