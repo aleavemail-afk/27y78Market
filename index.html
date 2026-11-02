@@ -33,7 +33,7 @@ button{font:inherit;font-weight:500;cursor:pointer;border:0;color:inherit}
 #nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 
 /* Hero central: productos */
-.hero{padding:22px 16px 10px}
+.hero{position:relative;min-height:75vh;padding:22px 16px 10px}
 .ttl{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .ttl::before,.ttl::after{content:"";flex:1;height:1.5px;background:var(--ink)}
 .ttl h2{font-size:21px;font-weight:400;text-align:center}
@@ -58,8 +58,14 @@ button{font:inherit;font-weight:500;cursor:pointer;border:0;color:inherit}
 .nada{grid-column:1/-1;text-align:center;color:var(--mute);padding:30px 0}
 
 /* Cargador */
-#load{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:30}
-.sp{width:38px;height:38px;border:3px solid #e4e4dc;border-top-color:var(--k);border-radius:50%;animation:spin .8s linear infinite}
+#load{position:absolute;left:0;right:0;top:170px;display:flex;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}
+#load.on{opacity:1}
+.sp{width:40px;height:40px;border:3px solid rgba(227,179,65,.28);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+#cont{transition:opacity .2s ease,transform .2s ease}
+#cont.sal{opacity:0;transform:translateY(8px)}
+.himg{position:relative;aspect-ratio:2/1;border-radius:14px;overflow:hidden;background:#e7e7e1;margin-bottom:14px}
+.himg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease}
+.himg img.v{opacity:1}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Barra del carrito */
@@ -83,7 +89,7 @@ label.f{display:block;font-size:14px;font-weight:400;margin-top:10px}
 .ok{text-align:center;padding:10px 0}
 .ok .big{font-size:52px}
 .code{display:inline-block;background:var(--k);color:var(--gold);font-weight:500;font-size:24px;border-radius:10px;padding:6px 14px;margin:10px 0}
-@media(prefers-reduced-motion:reduce){#sheet{transition:none}.sp{animation-duration:2.4s}}
+@media(prefers-reduced-motion:reduce){#sheet,#cont,#load,.himg img{transition:none}.sp{animation-duration:2.4s}}
 </style>
 </head>
 <body>
@@ -99,14 +105,17 @@ label.f{display:block;font-size:14px;font-weight:400;margin-top:10px}
 </header>
 
 <main class="hero">
-  <div class="ttl"><h2 id="ttl"></h2></div>
-  <div class="grid" id="grid"></div>
+  <div id="cont">
+    <div class="ttl"><h2 id="ttl"></h2></div>
+    <div class="himg" id="himg"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <div id="load" role="status" aria-label="Cargando"><div class="sp"></div></div>
 </main>
 
 <button id="bar" onclick="abrir()"><span id="bn"></span><span id="bt"></span></button>
 <div id="veil" onclick="cerrar()"></div>
 <section id="sheet" aria-label="Tu bolsa"></section>
-<div id="load" role="status" aria-label="Cargando"><div class="sp"></div></div>
 
 <script>
 /* ===== Ajustes ===== */
@@ -139,17 +148,32 @@ function imgTag(src){
   return src ? `<img src="${src}" alt="" loading="lazy" onerror="this.remove()">` : "";
 }
 
-function pintarVista(h){
-  const cat = CATS.find(c=>c.id===h);
-  /* menú de categorías */
-  const nav = $("nav"); nav.innerHTML = "";
+let imgActual = "";
+
+function armarNav(){
+  const nav = $("nav");
   [{id:"",n:"Todo"}].concat(CATS).forEach(c=>{
     const a = document.createElement("a");
-    a.href = "#" + c.id; a.textContent = c.n;
-    if((cat?cat.id:"")===c.id) a.className = "on";
+    a.href = "#" + c.id; a.textContent = c.n; a.dataset.id = c.id;
     nav.appendChild(a);
   });
+}
+function marcarNav(h){
+  const nav = $("nav");
+  nav.querySelectorAll("a").forEach(a=>{
+    const on = a.dataset.id===h; a.classList.toggle("on",on);
+    if(on) nav.scrollTo({left:a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2,behavior:"smooth"});
+  });
+}
+
+function pintarVista(h){
+  const cat = CATS.find(c=>c.id===h);
   $("ttl").textContent = cat ? cat.n : "Todos los productos";
+  const k = cat ? cat.id : "todo";
+  if(k!==imgActual){
+    imgActual = k;
+    $("himg").innerHTML = `<img src="img/banner-${k}.webp" alt="" decoding="async" onload="this.className='v'" onerror="this.remove()">`;
+  }
   const g = $("grid"); g.innerHTML = "";
 
   /* sin productos: tarjetas vacías */
@@ -197,8 +221,13 @@ function buscar(){
 
 /* Navegación con cargador */
 function ir(){
-  $("load").hidden = false;
-  setTimeout(()=>{ pintarVista(actual()); window.scrollTo(0,0); $("load").hidden = true; }, CFG.espera);
+  const h = actual();
+  marcarNav(CATS.some(c=>c.id===h) ? h : "");
+  $("cont").classList.add("sal"); $("load").classList.add("on");
+  setTimeout(()=>{
+    pintarVista(h); window.scrollTo(0,0);
+    $("cont").classList.remove("sal"); $("load").classList.remove("on");
+  }, CFG.espera);
 }
 window.addEventListener("hashchange", ir);
 
@@ -279,7 +308,7 @@ function enviarPedido(p){ console.log("Pedido", p); }
 
 function nuevo(){ Object.keys(cart).forEach(k=>delete cart[k]); cerrar(); pintarVista(actual()); barra(); }
 
-barra(); ir();
+armarNav(); barra(); ir();
 </script>
 </body>
 </html>
