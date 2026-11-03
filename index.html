@@ -106,7 +106,7 @@ body{animation:fade .7s ease backwards}
 #cont.go .himg{animation:subir .6s .08s var(--ease) backwards}
 #cont.go .item{animation:subir .65s var(--ease) backwards;animation-delay:calc(.16s + var(--i,0)*65ms)}
 .grid.re{animation:fade .35s ease}
-.act>*{animation:pop .35s var(--ease)}
+.act>.pop{animation:pop .35s var(--ease)}
 .bump{animation:bump .45s var(--ease)}
 #cn,#bt{display:inline-block}
 #sheet.on>*{animation:subir .5s var(--ease) backwards}
@@ -248,7 +248,7 @@ let nPrev = 0;
 function bump(el){ el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
 function error(m){ const e = $("err"); e.textContent = m; e.classList.remove("sh"); void e.offsetWidth; e.classList.add("sh"); }
 
-function accion(i){
+function accion(i, animar=true){
   const a = tarj[i]; if(!a) return;
   const x = PRODUCTOS[i], q = cart[i]||0;
   const st = a.querySelector(".step");
@@ -265,6 +265,7 @@ function accion(i){
     const [m,p] = a.querySelectorAll("button");
     m.onclick = ()=>cambiar(i,-1); p.onclick = ()=>cambiar(i,1);
   }
+  if(animar) Array.from(a.children).forEach(el=>el.classList.add("pop"));
 }
 
 function armarNav(){
@@ -312,7 +313,7 @@ function pintarVista(h){
     d.querySelector("h3").textContent = x.n;
     d.querySelector(".u").textContent = x.u;
     tarj[i] = d.querySelector(".act");
-    accion(i);
+    accion(i,false);
     g.appendChild(d);
   });
   if(hay===0) g.innerHTML = '<p class="nada">' + (busqueda ? "No encontramos productos con eso." : "Pronto habrá productos aquí.") + '</p>';
